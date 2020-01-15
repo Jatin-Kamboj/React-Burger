@@ -9,7 +9,6 @@ class OrderSummary extends React.Component {
   }
 
   render() {
-    console.log("OrderSummary");
     const ingredientSummary = Object.keys(this.props.summary).map(
       (igkeys, index) => {
         return (
@@ -21,7 +20,6 @@ class OrderSummary extends React.Component {
       }
     );
 
-    console.log("ingredientSummary => ", ingredientSummary);
     return (
       <Aux>
         <h3>Delicious Burger</h3>

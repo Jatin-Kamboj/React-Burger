@@ -3,7 +3,7 @@ import classes from "./Button.module.css";
 
 const Button = props => {
   var buttonClass = props.class;
-  console.log("buttonClass => ", buttonClass);
+
   return (
     <button
       onClick={props.clicked}
