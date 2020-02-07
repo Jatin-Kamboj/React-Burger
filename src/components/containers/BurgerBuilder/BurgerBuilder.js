@@ -34,7 +34,7 @@ export class BurgerBuilder extends Component {
       .reduce((sum, el) => {
         return sum + el;
       }, 0);
-    this.setState({ purchaseable: sum > 0 }, e => {});
+    this.setState({ purchaseable: sum > 0 });
   };
 
   addInggredientHandler = type => {
@@ -114,6 +114,7 @@ export class BurgerBuilder extends Component {
         this.setState({
           loading: false
         });
+        this.props.history.push("/checkout");
         console.log("purchaseContinueHandler => ", response);
       })
       .catch(error => {
@@ -135,6 +136,7 @@ export class BurgerBuilder extends Component {
   }
 
   render() {
+    console.log(this.props);
     const disabledInfo = {
       ...this.state.ingredients
     };

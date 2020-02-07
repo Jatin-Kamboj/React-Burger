@@ -2,6 +2,10 @@ import React, { Component, Fragment } from "react";
 import Aux from "../hoc/auxilary_component";
 import Toolbar from "../Toolbar/Toolbar";
 import SideDrawer from "../SideDrawer/SideDrawer";
+import { Route } from "react-router";
+import { NavLink } from "react-router-dom";
+import { BurgerBuilder } from "../containers/BurgerBuilder/BurgerBuilder";
+import { CheckoutComponent } from "../containers/checkout_component";
 import classnames from "./Layout.module.css";
 class Layout extends React.Component {
   state = {

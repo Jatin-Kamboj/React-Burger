@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./Button.module.css";
 
 const Button = props => {
-  var buttonClass = props.class;
+  var buttonClass = props.buttonClass;
 
   return (
     <button
