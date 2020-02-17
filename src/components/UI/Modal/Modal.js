@@ -4,7 +4,6 @@ import Backdrop from "../Backdrop/Backdrop";
 import Aux from "../../hoc/auxilary_component";
 
 const Modal = props => {
-  console.log("Modal => ", props.BackdropHandler);
   return (
     <Aux>
       <Backdrop show={props.show} BackdropHandler={props.modalClose}>

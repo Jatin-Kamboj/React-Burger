@@ -83,44 +83,59 @@ export class BurgerBuilder extends Component {
   };
 
   purchaseCancelHandler = () => {
-    console.log("purchaseCancelHandler =>");
     this.setState({ purchasing: false });
   };
 
   purchaseContinueHandler = () => {
-    console.log("purchaseContinueHandler =>", this.state);
-    this.setState({ loading: true, purchasing: true }, e => {
-      console.log(this.state);
+    const { ingredients } = this.state;
+    let queryParams = [];
+    for (const key in ingredients) {
+      queryParams.push(
+        encodeURIComponent(key) + "=" + encodeURIComponent(ingredients[key])
+      );
+    }
+    queryParams.push("price=" + this.state.totalPrice);
+    let queryString = queryParams.join("&");
+    console.log("queryString => ", queryString);
+
+    this.props.history.push({
+      pathname: "/checkout",
+      search: "?" + queryString
     });
+    // console.log("purchaseContinueHandler =>", this.state);
+    // this.setState({ loading: true, purchasing: true }, e => {
+    //   console.log(this.state);
+    // });
 
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customerData: {
-        name: "Jatin",
-        address: {
-          street: "Lodhi Road",
-          zipcode: 112233,
-          country: "india"
-        },
-        email: "test@gmail.com",
-        deliveryMethod: "Fastest"
-      }
-    };
+    // const order = {
 
-    axiosInstance
-      .post("/orders.json", order)
-      .then(response => {
-        this.setState({
-          loading: false
-        });
-        this.props.history.push("/checkout");
-        console.log("purchaseContinueHandler => ", response);
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-        console.log("error => ", error);
-      });
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customerData: {
+    //     name: "Jatin",
+    //     address: {
+    //       street: "Lodhi Road",
+    //       zipcode: 112233,
+    //       country: "india"
+    //     },
+    //     email: "test@gmail.com",
+    //     deliveryMethod: "Fastest"
+    //   }
+    // };
+
+    // axiosInstance
+    //   .post("/orders.json", order)
+    //   .then(response => {
+    //     this.setState({
+    //       loading: false
+    //     });
+
+    //     console.log("purchaseContinueHandler => ", response);
+    //   })
+    //   .catch(error => {
+    //     this.setState({ loading: false });
+    //     console.log("error => ", error);
+    //   });
   };
 
   componentDidMount() {
@@ -136,7 +151,6 @@ export class BurgerBuilder extends Component {
   }
 
   render() {
-    console.log(this.props);
     const disabledInfo = {
       ...this.state.ingredients
     };

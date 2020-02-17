@@ -5,6 +5,7 @@ import Button from "../../UI/Button/Button";
 import PropTypes from "prop-types";
 
 export const CheckoutSummary = props => {
+  // console.log(props);
   return (
     <div className={classes.CheckoutSummary}>
       <h1>We hope it tastes well</h1>
@@ -12,11 +13,10 @@ export const CheckoutSummary = props => {
         <Burger ingredients={props.ingredients} />
       </div>
       <div>
-        {" "}
-        <Button buttonClass="Danger" onClick>
+        <Button buttonClass="Danger" clicked={props.checkoutCancelled}>
           CANCEL
         </Button>
-        <Button buttonClass="Success" onClick>
+        <Button buttonClass="Success" clicked={props.checkoutContinue}>
           CONTINUE
         </Button>
       </div>
