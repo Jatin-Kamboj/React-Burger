@@ -25,15 +25,19 @@ export class OrdersComponent extends Component {
   }
   render() {
     const { orders } = this.state;
-    let orderView = orders.map((element, index) => {
-      return (
-        <OrderComponent
-          key={element.id}
-          price={element.price}
-          ingredients={element.ingredients}
-        />
-      );
-    });
+    let orderView = null;
+    if (orders) {
+      orderView = orders.map((element, index) => {
+        return (
+          <OrderComponent
+            key={element.id}
+            price={element.price}
+            ingredients={element.ingredients}
+          />
+        );
+      });
+    }
+
     return <div>{orderView}</div>;
   }
 }
