@@ -6,6 +6,7 @@ export const OrderComponent = props => {
   console.log("OrderComponent => ", props);
   const ingredients = props.ingredients;
   let displayIngredients = null;
+
   if (ingredients) {
     const data = Object.keys(ingredients)
       .map((element, index) => {

@@ -4,12 +4,15 @@ import PropTypes from "prop-types";
 
 export const InputComponent = props => {
   let inputField = null;
-  switch (props.elementType) {
+  // console.log("select => ", props);
+
+  switch (props.inputElement) {
     case "input":
       inputField = (
         <input
           className={classes.inputElement}
           {...props.elementConfig}
+          onChange={props.changed}
           value={props.value}
           placeholder={props.placeholder}
         />
@@ -20,15 +23,31 @@ export const InputComponent = props => {
         <textarea
           className={classes.inputElement}
           {...props.elementConfig}
+          onChange={props.changed}
           value={props.value}
           placeholder={props.placeholder}
         />
       );
+      break;
+    case "select":
+      // console.log("select => ", props.elementConfig.elementconfig.options);
+
+      inputField = (
+        <select
+          className={classes.inputElement}
+          {...props.elementConfig}
+          onChange={props.changed}
+          value={props.value}
+          placeholder={props.placeholder}
+        ></select>
+      );
+      break;
     default:
       inputField = (
         <input
           className={classes.inputElement}
           {...props.elementConfig}
+          onChange={props.changed}
           value={props.value}
           placeholder={props.placeholder}
         />
