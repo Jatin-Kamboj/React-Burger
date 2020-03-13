@@ -3,7 +3,7 @@ import classes from "./style.module.css";
 import { string, element } from "prop-types";
 
 export const OrderComponent = props => {
-  console.log("OrderComponent => ", props);
+  // console.log("OrderComponent => ", props);
   const ingredients = props.ingredients;
   let displayIngredients = null;
 

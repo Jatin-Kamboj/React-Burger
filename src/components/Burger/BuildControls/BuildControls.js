@@ -21,7 +21,6 @@ const controls = [
 ];
 
 const BuildControls = props => {
-  console.log("BuildControls= > ", props);
   return (
     <div className={classes.BuildControls}>
       <p>

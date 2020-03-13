@@ -4,8 +4,10 @@ import Classes from "./style.module.css";
 import { axiosInstance } from "../../../../axios/axios";
 import Spinner from "../../../UI/Spinner/Spinner";
 import { InputComponent } from "../../../UI/input_components/input_component";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-export class ContactDataComponent extends Component {
+class ContactDataComponent extends Component {
   state = {
     orderForm: {
       name: {
@@ -95,7 +97,7 @@ export class ContactDataComponent extends Component {
     for (const key in this.state.orderForm) {
       formData[key] = this.state.orderForm[key].value;
     }
-    console.log(formData);
+    // console.log(formData);
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
@@ -108,7 +110,7 @@ export class ContactDataComponent extends Component {
         this.setState({
           loading: false
         });
-
+        console.log("ContactDataComponent => ", this.props);
         this.props.history.push("/");
       })
       .catch(error => {
@@ -163,4 +165,11 @@ export class ContactDataComponent extends Component {
   }
 }
 
-export default ContactDataComponent;
+const mapStateToProps = state => {
+  return {
+    ingredients: state.ingredients,
+    price: state.totalPrice
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(ContactDataComponent));
