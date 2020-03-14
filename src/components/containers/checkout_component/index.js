@@ -18,14 +18,14 @@ class CheckoutComponent extends Component {
     let price = null;
 
     for (const param of query.entries()) {
-      console.log("Param values => ", param);
+      // console.log("Param values => ", param);
       if (param[0] === "price") {
         price = param[1];
       } else {
         ingredients[param[0]] = +param[1];
       }
     }
-    console.log("checkoutContinue price=> ", price, ingredients);
+    // console.log("checkoutContinue price=> ", price, ingredients);
     this.setState({ ingredients: ingredients, price: price });
   }
 
@@ -52,9 +52,9 @@ class CheckoutComponent extends Component {
   //   />
   // )}
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     const { ingredients, price } = this.props;
-    console.log("CheckoutComponent=> ", ingredients);
+    // console.log("CheckoutComponent=> ", ingredients);
     return (
       <div>
         <CheckoutSummary
@@ -71,7 +71,6 @@ class CheckoutComponent extends Component {
   }
 }
 const mapStateToProps = state => {
-  console.log("mapStateToProps => ", state);
   return {
     ingredients: state.ingredients,
     price: state.totalPrice

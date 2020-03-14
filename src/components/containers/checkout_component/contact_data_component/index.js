@@ -110,7 +110,7 @@ class ContactDataComponent extends Component {
         this.setState({
           loading: false
         });
-        console.log("ContactDataComponent => ", this.props);
+
         this.props.history.push("/");
       })
       .catch(error => {

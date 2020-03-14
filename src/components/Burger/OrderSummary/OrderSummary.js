@@ -5,7 +5,7 @@ import Button from "../../UI/Button/Button";
 
 class OrderSummary extends React.Component {
   componentWillUpdate(prevState, newState) {
-    console.log("OrderSummary => ", newState, " => ", prevState);
+    // console.log("OrderSummary => ", newState, " => ", prevState);
   }
 
   render() {
