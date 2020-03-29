@@ -1,9 +1,11 @@
 import * as actionTypes from "../actions";
 
 const intitalState = {
-  ingredients: { bacon: 0, cheese: 0, meat: 0, salad: 0 },
+  ingredients: null,
   totalPrice: 0,
-  purchaseable: false
+  purchaseable: false,
+  error: false,
+  errorMessage: null
 };
 
 const INGREDIENTS_PRICES = {
@@ -16,7 +18,6 @@ const INGREDIENTS_PRICES = {
 const reducer = (state = intitalState, action) => {
   switch (action.type) {
     case actionTypes.ADD_INGREDIENTS:
-      // console.log("ADD_INGREDIENTS => ", state.totalPrice);
       let val = {
         ...state,
         ingredients: {
@@ -27,10 +28,8 @@ const reducer = (state = intitalState, action) => {
         purchaseable:
           state.totalPrice + INGREDIENTS_PRICES[action.INGREDIENT] > 0
       };
-      // console.log("ADD_INGREDIENTS val => ", val.totalPrice);
       return val;
     case actionTypes.REMOVE_INGREDIENTS:
-      // console.log("REMOVE_INGREDIENTS => ", state.totalPrice);
       let vale = {
         ...state,
         ingredients: {
@@ -41,9 +40,21 @@ const reducer = (state = intitalState, action) => {
         purchaseable:
           state.totalPrice - INGREDIENTS_PRICES[action.INGREDIENT] > 0
       };
-      // console.log("REMOVE_INGREDIENTS val => ", vale.totalPrice, vale);
-      return vale;
 
+      return vale;
+    case actionTypes.SET_INGREDIENTS:
+      return {
+        ...state,
+        ingredients: action.ingredients,
+        error: false,
+        errorMessage: action.errorMessage
+      };
+    case actionTypes.remove_ingredient:
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.errorMessage
+      };
     default:
       return state;
       break;
