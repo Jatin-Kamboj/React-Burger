@@ -6,6 +6,7 @@
     "@microsoft/signalr": "^3.0.1",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
+    "chart.js": "^2.9.3",
     "install": "^0.13.0",
     "npm": "^6.13.1",
     "prop-types": "^15.7.2",
@@ -19,6 +20,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.1.1",
     "redux": "^4.0.5",
+    "redux-form": "^8.3.2",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {

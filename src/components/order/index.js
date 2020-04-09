@@ -28,7 +28,7 @@ export const OrderComponent = props => {
             padding: "5px"
           }}
         >
-          {element.ingredient} {element.amount}
+          {element.ingredient} {element.amount}{" "}
         </span>
       );
     });
@@ -44,6 +44,9 @@ export const OrderComponent = props => {
       <p>Ingredients: {displayIngredients}</p>
       <p>
         Price : <strong>{Number.parseFloat(props.price).toFixed(2)}</strong>
+        <span className={`ml-4 ${classes.pointer}`} style={{ color: "red" }}>
+          X
+        </span>
       </p>
     </div>
   );

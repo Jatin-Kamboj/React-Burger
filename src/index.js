@@ -6,12 +6,23 @@ import App from "./App";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import reducer from "./store/reducers";
+import orderReducer from "./store/reducers/order_reducer";
 import thunk from "redux-thunk";
+import { reducer as formReducer } from "redux-form";
+import "../src/styles/style.css";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
+const rootReducer = combineReducers({
+  burgerBuilder: reducer,
+  order: orderReducer,
+  form: formReducer,
+});
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk))
+);
 
 const app = (
   <Provider store={store}>

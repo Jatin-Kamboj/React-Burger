@@ -1,8 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { CheckoutSummary } from "../../order/checkout_summary";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import ContactDataComponent from "./contact_data_component";
 import { connect } from "react-redux";
+import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
+import * as actionCreators from "../../../store/actions";
+import { axiosInstance } from "../../../axios/axios";
+import Spinner from "../../UI/Spinner/Spinner";
 
 class CheckoutComponent extends Component {
   state = {
@@ -39,6 +43,10 @@ class CheckoutComponent extends Component {
     }
   };
 
+  componentDidMount() {
+    // this.props.onPurchaseInit();
+  }
+
   checkoutCancelled = () => {
     this.props.history.goBack();
   };
@@ -52,28 +60,47 @@ class CheckoutComponent extends Component {
   //   />
   // )}
   render() {
-    // console.log(this.props);
     const { ingredients, price } = this.props;
+    const isIngLoaded = <Redirect to="/" />;
+    const isBurgerPurchased =
+      this.props.purchased && this.props.purchased ? <Redirect to="/" /> : null;
     // console.log("CheckoutComponent=> ", ingredients);
     return (
       <div>
-        <CheckoutSummary
-          ingredients={ingredients}
-          checkoutCancelled={this.checkoutCancelled}
-          checkoutContinue={this.checkoutContinue}
-        />
-        <Route
-          path={this.props.match.path + "/contact-data"}
-          render={() => <ContactDataComponent />}
-        />
+        {this.props.ingredients ? (
+          <Fragment>
+            {isBurgerPurchased}
+            <CheckoutSummary
+              ingredients={ingredients}
+              checkoutCancelled={this.checkoutCancelled}
+              checkoutContinue={this.checkoutContinue}
+            />
+            <Route
+              path={this.props.match.path + "/contact-data"}
+              render={() => <ContactDataComponent />}
+            />
+          </Fragment>
+        ) : (
+          isIngLoaded
+        )}
       </div>
     );
   }
 }
 const mapStateToProps = state => {
   return {
-    ingredients: state.ingredients,
-    price: state.totalPrice
+    ingredients: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    purchased: state.order.purchased
   };
 };
-export default connect(mapStateToProps)(CheckoutComponent);
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     onPurchaseInit: () => dispatch(actionCreators.purchaseInit())
+//   };
+// };
+export default connect(
+  mapStateToProps
+  // ,mapDispatchToProps
+)(withErrorHandler(CheckoutComponent, axiosInstance));

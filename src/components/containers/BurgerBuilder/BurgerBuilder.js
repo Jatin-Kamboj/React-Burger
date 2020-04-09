@@ -10,12 +10,14 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { connect } from "react-redux";
 import * as actionTypes from "../../../store/actions";
 import * as burgerBuilderActionCreators from "../../../store/actions/burger_builder_actioncreators";
+import * as actionCreators from "../../../store/actions/index";
+import { Auth } from "../auth";
 
 const INGREDIENTS_PRICES = {
   salad: 0.5,
   cheese: 0.4,
   meat: 1.3,
-  bacon: 0.7
+  bacon: 0.7,
 };
 
 export class BurgerBuilder extends Component {
@@ -23,12 +25,12 @@ export class BurgerBuilder extends Component {
     purchaseable: false,
     purchasing: false,
     loading: false,
-    error: null
+    error: null,
   };
 
-  updatePurchase = ingredients => {
+  updatePurchase = (ingredients) => {
     const sum = Object.keys(ingredients)
-      .map(igkey => {
+      .map((igkey) => {
         return ingredients[igkey];
       })
       .reduce((sum, el) => {
@@ -102,6 +104,7 @@ export class BurgerBuilder extends Component {
     //   pathname: "/checkout",
     //   search: "?" + queryString
     // });
+    this.props.onPurchaseInit();
     this.props.history.push("/checkout");
 
     // console.log("purchaseContinueHandler =>", this.state);
@@ -142,6 +145,7 @@ export class BurgerBuilder extends Component {
 
   componentDidMount() {
     this.props.onInitIngredients();
+
     // axiosInstance.get("ingredientsInitialCost.json").then(response => {
     //   console.log(response);
     // });
@@ -159,7 +163,7 @@ export class BurgerBuilder extends Component {
   render() {
     // console.log("Props => ", this.props);
     const disabledInfo = {
-      ...this.props.ingredients
+      ...this.props.ingredients,
     };
 
     for (const ingredient in disabledInfo) {
@@ -205,6 +209,7 @@ export class BurgerBuilder extends Component {
 
     return (
       <Aux>
+        <Auth></Auth>
         <Modal
           show={this.state.purchasing}
           modalClose={this.purchaseCancelHandler}
@@ -217,24 +222,25 @@ export class BurgerBuilder extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
-    isPurchaseAble: state.purchaseable,
-    error: state.error,
-    errorMessage: state.errorMessage
+    ingredients: state.burgerBuilder.ingredients,
+    totalPrice: state.burgerBuilder.totalPrice,
+    isPurchaseAble: state.burgerBuilder.purchaseable,
+    error: state.burgerBuilder.error,
+    errorMessage: state.burgerBuilder.errorMessage,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onIngredientAdded: ingredient =>
+    onIngredientAdded: (ingredient) =>
       dispatch(burgerBuilderActionCreators.add_ingredient(ingredient)),
-    onIngredientRemoved: ingredient =>
+    onIngredientRemoved: (ingredient) =>
       dispatch(burgerBuilderActionCreators.remove_ingredient(ingredient)),
     onInitIngredients: () =>
-      dispatch(burgerBuilderActionCreators.initIngredients())
+      dispatch(burgerBuilderActionCreators.initIngredients()),
+    onPurchaseInit: () => dispatch(actionCreators.purchaseInit()),
   };
 };
 

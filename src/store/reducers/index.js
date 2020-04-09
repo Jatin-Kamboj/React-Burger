@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions";
+import { updateObject } from "../../Utils/redux_utils";
 
 const intitalState = {
   ingredients: null,
@@ -18,11 +19,14 @@ const INGREDIENTS_PRICES = {
 const reducer = (state = intitalState, action) => {
   switch (action.type) {
     case actionTypes.ADD_INGREDIENTS:
+      const updatedIngredient = {
+        [action.INGREDIENT]: state.ingredients[action.INGREDIENT] + 1
+      };
+      const updatedIngredients = updateObject(state, updatedIngredient);
       let val = {
         ...state,
         ingredients: {
-          ...state.ingredients,
-          [action.INGREDIENT]: state.ingredients[action.INGREDIENT] + 1
+          ...state.ingredients
         },
         totalPrice: state.totalPrice + INGREDIENTS_PRICES[action.INGREDIENT],
         purchaseable:
