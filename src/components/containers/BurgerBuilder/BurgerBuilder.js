@@ -209,7 +209,6 @@ export class BurgerBuilder extends Component {
 
     return (
       <Aux>
-        <Auth></Auth>
         <Modal
           show={this.state.purchasing}
           modalClose={this.purchaseCancelHandler}

@@ -10,16 +10,20 @@ export {
   FETCH_ORDERS_FAIL,
   FETCH_ORDERS_START,
   FETCH_ORDERS_SUCCESS,
-  DELETE_ORDER
+  DELETE_ORDER,
+  AUTH_FAIL,
+  AUTH_START,
+  AUTH_SUCCESS,
 } from "./action_types";
 export {
   add_ingredient,
   remove_ingredient,
-  initIngredients
+  initIngredients,
 } from "./burger_builder_actioncreators";
 export {
   purchaseBurgerStart,
   purchaseBurger,
   purchaseInit,
-  fetchOrders
+  fetchOrders,
 } from "./order_action_creators";
+export { auth } from "./auth_action_creators";

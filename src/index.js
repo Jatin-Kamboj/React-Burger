@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import reducer from "./store/reducers";
 import orderReducer from "./store/reducers/order_reducer";
+import authReducer from "./store/reducers/auth_reducer";
 import thunk from "redux-thunk";
 import { reducer as formReducer } from "redux-form";
 import "../src/styles/style.css";
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   burgerBuilder: reducer,
   order: orderReducer,
   form: formReducer,
+  auth: authReducer,
 });
 const store = createStore(
   rootReducer,

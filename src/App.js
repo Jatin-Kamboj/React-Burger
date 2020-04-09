@@ -6,6 +6,7 @@ import { BrowserRouter, Redirect, NavLink } from "react-router-dom";
 import { Route, Switch } from "react-router-dom";
 import CheckoutComponent from "./components/containers/checkout_component";
 import OrdersComponent from "./components/orders";
+import Auth from "./components/containers/auth";
 // import {  } from "./components/Prac";
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
           <Switch>
             <Route path="/checkout" component={CheckoutComponent} />
             <Route path="/orders" exact component={OrdersComponent} />
+            <Route path="/auth" exact component={Auth} />
             <Route path="/" exact component={BurgerBuilder} />
             <Route
               render={() => (
