@@ -10,8 +10,8 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { connect } from "react-redux";
 import * as actionTypes from "../../../store/actions";
 import * as burgerBuilderActionCreators from "../../../store/actions/burger_builder_actioncreators";
-import * as actionCreators from "../../../store/actions/index";
-import { Auth } from "../auth";
+import * as actionCreators from "../../../store/actions";
+import { applicationUrls } from "../../../common";
 
 const INGREDIENTS_PRICES = {
   salad: 0.5,
@@ -81,7 +81,13 @@ export class BurgerBuilder extends Component {
   // };
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    console.log("purchaseHandler");
+    if (!this.props.isAuthorised) {
+      this.props.history.push(applicationUrls.auth);
+      this.props.onsetAuthRedirectPath(applicationUrls.auth);
+    } else {
+      this.setState({ purchasing: true });
+    }
   };
 
   purchaseCancelHandler = () => {
@@ -105,7 +111,12 @@ export class BurgerBuilder extends Component {
     //   search: "?" + queryString
     // });
     this.props.onPurchaseInit();
-    this.props.history.push("/checkout");
+    if (this.props.isAuthorised) {
+      this.props.history.push(applicationUrls.checkout);
+    }
+    // else {
+    //   this.props.history.push(applicationUrls.root);
+    // }
 
     // console.log("purchaseContinueHandler =>", this.state);
     // this.setState({ loading: true, purchasing: true }, e => {
@@ -144,7 +155,7 @@ export class BurgerBuilder extends Component {
   };
 
   componentDidMount() {
-    this.props.onInitIngredients();
+    this.props.onInitIngredients(this.props.isAuthorised);
 
     // axiosInstance.get("ingredientsInitialCost.json").then(response => {
     //   console.log(response);
@@ -190,6 +201,7 @@ export class BurgerBuilder extends Component {
             ingredientRemoved={this.props.onIngredientRemoved}
             disabledInfo={disabledInfo}
             ordered={this.purchaseHandler}
+            isAuthorised={this.props.isAuthorised}
           />
         </React.Fragment>
       );
@@ -199,6 +211,7 @@ export class BurgerBuilder extends Component {
           purchaseCancelled={this.purchaseCancelHandler}
           purchaseContinued={this.purchaseContinueHandler}
           summary={this.props.ingredients}
+          isAuthorised={this.props.isAuthorised}
         />
       );
     }
@@ -228,6 +241,7 @@ const mapStateToProps = (state) => {
     isPurchaseAble: state.burgerBuilder.purchaseable,
     error: state.burgerBuilder.error,
     errorMessage: state.burgerBuilder.errorMessage,
+    isAuthorised: state.auth.token != null,
   };
 };
 
@@ -237,9 +251,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(burgerBuilderActionCreators.add_ingredient(ingredient)),
     onIngredientRemoved: (ingredient) =>
       dispatch(burgerBuilderActionCreators.remove_ingredient(ingredient)),
-    onInitIngredients: () =>
-      dispatch(burgerBuilderActionCreators.initIngredients()),
+    onInitIngredients: (isAuthorised) =>
+      dispatch(burgerBuilderActionCreators.initIngredients(isAuthorised)),
     onPurchaseInit: () => dispatch(actionCreators.purchaseInit()),
+    onsetAuthRedirectPath: (path) =>
+      dispatch(actionCreators.setAuthRedirectPath(path)),
   };
 };
 

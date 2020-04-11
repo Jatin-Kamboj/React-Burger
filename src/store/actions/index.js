@@ -14,6 +14,9 @@ export {
   AUTH_FAIL,
   AUTH_START,
   AUTH_SUCCESS,
+  AUTH_LOGOUT,
+  SET_INGREDIENTS_START,
+  SET_AUTH_REDIRECT_PATH,
 } from "./action_types";
 export {
   add_ingredient,
@@ -26,4 +29,4 @@ export {
   purchaseInit,
   fetchOrders,
 } from "./order_action_creators";
-export { auth } from "./auth_action_creators";
+export { auth, authLogout, setAuthRedirectPath } from "./auth_action_creators";

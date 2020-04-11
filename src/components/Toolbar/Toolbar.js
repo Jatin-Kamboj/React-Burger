@@ -5,7 +5,7 @@ import DrawerToggle from "../SideDrawer/DrawerToggle/DrawerToggle";
 import { NavLink } from "react-router-dom";
 import NavigationItems from "../Navigation/NavigationItems/NavigationItems";
 
-const Toolbar = props => {
+const Toolbar = (props) => {
   return (
     <header className={classes.Toolbar}>
       <DrawerToggle Clicked={props.closed} />
@@ -15,7 +15,7 @@ const Toolbar = props => {
         </NavLink>
       </div>
       <nav className={classes.DesktopOnly}>
-        <NavigationItems />
+        <NavigationItems isUserAuthorised={props.isUserAuthorised} />
       </nav>
     </header>
   );

@@ -25,7 +25,11 @@ const store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware(thunk))
 );
-
+// console.log(
+//   store.subscribe(() => {
+//     console.log("getState() :", store.getState().burgerBuilder);
+//   })
+// );
 const app = (
   <Provider store={store}>
     <BrowserRouter>

@@ -4,30 +4,30 @@ import BuildControl from "./BuildControl/BuildControl";
 const controls = [
   {
     label: "Salad",
-    type: "salad"
+    type: "salad",
   },
   {
     label: "Bacon",
-    type: "bacon"
+    type: "bacon",
   },
   {
     label: "Cheese",
-    type: "cheese"
+    type: "cheese",
   },
   {
     label: "Meat",
-    type: "meat"
-  }
+    type: "meat",
+  },
 ];
 
-const BuildControls = props => {
+const BuildControls = (props) => {
   return (
     <div className={classes.BuildControls}>
       <p>
         Current Price: <strong>{props.price.toFixed(2)} </strong>
       </p>
 
-      {controls.map((element, index) => {
+      {controls.map((element) => {
         return (
           <BuildControl
             added={() => props.ingredientAdded(element.type)}
@@ -43,7 +43,7 @@ const BuildControls = props => {
         onClick={props.ordered}
         className={classes.OrderButton}
       >
-        ORDER NOW
+        {props.isAuthorised ? "ORDER NOW" : "Login to Order"}
       </button>
     </div>
   );

@@ -8,11 +8,11 @@ import { connect } from "react-redux";
 class OrdersComponent extends Component {
   state = {
     orders: [],
-    loading: false
+    loading: false,
   };
   componentDidMount() {
     // this.setState({ loading: true });
-    this.props.getOrdersInit();
+    this.props.getOrdersInit(this.props.token);
   }
   render() {
     let isOrdersLoaded = <Spinner />;
@@ -37,18 +37,19 @@ class OrdersComponent extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   console.log(state);
   return {
     orders: state.order.orders,
     error: state.order.error,
-    loading: state.order.loading
+    loading: state.order.loading,
+    token: state.auth.token,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getOrdersInit: () => dispatch(actionCreators.fetchOrders())
+    getOrdersInit: (token) => dispatch(actionCreators.fetchOrders(token)),
   };
 };
 

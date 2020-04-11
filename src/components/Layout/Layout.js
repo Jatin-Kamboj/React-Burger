@@ -7,9 +7,11 @@ import { NavLink } from "react-router-dom";
 import { BurgerBuilder } from "../containers/BurgerBuilder/BurgerBuilder";
 import { CheckoutComponent } from "../containers/checkout_component";
 import classnames from "./Layout.module.css";
+import { connect } from "react-redux";
+
 class Layout extends React.Component {
   state = {
-    showSideDrawer: false
+    showSideDrawer: false,
   };
 
   sideDrawerClosedHandler = () => {
@@ -19,9 +21,12 @@ class Layout extends React.Component {
   };
 
   render() {
+    const { isUserAuthorised } = this.props;
+    console.log("isUserAuthorised :", isUserAuthorised);
     return (
       <Aux>
         <Toolbar
+          isUserAuthorised={isUserAuthorised}
           show={this.state.showSideDrawer}
           closed={this.sideDrawerClosedHandler}
         />
@@ -34,4 +39,11 @@ class Layout extends React.Component {
     );
   }
 }
-export default Layout;
+
+const mapStateToProps = (state) => {
+  return {
+    isUserAuthorised: state.auth.token != null,
+  };
+};
+
+export default connect(mapStateToProps)(Layout);

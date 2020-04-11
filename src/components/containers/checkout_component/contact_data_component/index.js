@@ -16,72 +16,72 @@ class ContactDataComponent extends Component {
         elementtype: "input",
         elementconfig: {
           type: "text",
-          placeholder: "Your name"
+          placeholder: "Your name",
         },
         value: "",
         validation: {
-          required: true
-        }
+          required: true,
+        },
       },
       email: {
         elementtype: "input",
         elementconfig: {
           type: "text",
-          placeholder: "Your email"
+          placeholder: "Your email",
         },
         value: "",
         validation: {
-          required: true
-        }
+          required: true,
+        },
       },
       street: {
         elementtype: "input",
         elementconfig: {
           type: "text",
-          placeholder: "Your street"
+          placeholder: "Your street",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
-        valid: false
+        valid: false,
       },
       zipCode: {
         elementtype: "input",
         elementconfig: {
           type: "text",
-          placeholder: "Your zipCode"
+          placeholder: "Your zipCode",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
-        valid: false
+        valid: false,
       },
       country: {
         elementtype: "input",
         elementconfig: {
           type: "text",
-          placeholder: "Your country"
+          placeholder: "Your country",
         },
         value: "india",
         validation: {
-          required: true
+          required: true,
         },
-        valid: false
+        valid: false,
       },
       deliveryMethod: {
         elementtype: "select",
         elementconfig: {
           options: [
             { value: "fastest", display: "Fastest" },
-            { value: "cheapest", display: "Cheapest" }
+            { value: "cheapest", display: "Cheapest" },
           ],
-          placeholder: "Delivery Method"
+          placeholder: "Delivery Method",
         },
-        value: "fastest"
-      }
-    }
+        value: "fastest",
+      },
+    },
   };
 
   checkValidity = (value, rules) => {
@@ -92,7 +92,7 @@ class ContactDataComponent extends Component {
     }
   };
 
-  orderHandler = event => {
+  orderHandler = (event) => {
     event.preventDefault();
 
     const formData = {};
@@ -103,9 +103,9 @@ class ContactDataComponent extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      orderForm: formData
+      orderForm: formData,
     };
-    this.props.purchaseBurgerStart(order);
+    this.props.purchaseBurgerStart(order, this.props.token);
     this.props.history.push("/");
   };
 
@@ -128,14 +128,14 @@ class ContactDataComponent extends Component {
 
     let form = (
       <form onSubmit={this.orderHandler}>
-        {formInputArray.map(element => {
+        {formInputArray.map((element) => {
           return (
             <InputComponent
               key={element.id}
               inputElement={element.config.elementtype}
               elementConfig={element.config}
               value={element.config.value}
-              changed={event => this.inputOnChangeHandler(event, element.id)}
+              changed={(event) => this.inputOnChangeHandler(event, element.id)}
               label={element.id}
               placeholder={element.config.elementconfig.placeholder}
             />
@@ -157,17 +157,18 @@ class ContactDataComponent extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     ingredients: state.burgerBuilder.ingredients,
-    price: state.burgerBuilder.totalPrice
+    price: state.burgerBuilder.totalPrice,
+    token: state.auth.token,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    purchaseBurgerStart: orderData =>
-      dispatch(ActionCreators.purchaseBurgerStart(orderData))
+    purchaseBurgerStart: (orderData, token) =>
+      dispatch(ActionCreators.purchaseBurgerStart(orderData, token)),
   };
 };
 

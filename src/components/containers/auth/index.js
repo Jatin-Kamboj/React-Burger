@@ -1,10 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { FormComponent } from "../../forms";
 import { TextFieldComponent, LabelComponent } from "../../forms";
 import { required, validateEmail } from "../../../validations";
-import Button from "../../UI/Button/Button";
-import { auth } from "../../../store/actions";
+import Spinner from "../../UI/Spinner/Spinner";
+import { auth, setAuthRedirectPath } from "../../../store/actions";
 import { connect } from "react-redux";
+import { reactNotification } from "../../../Utils/react_notification";
+import { NotificationContainer } from "react-notifications";
+import { Redirect } from "react-router";
+import { applicationUrls } from "../../../common";
 
 export class Auth extends Component {
   state = {
@@ -25,13 +29,30 @@ export class Auth extends Component {
     });
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    // var cc = reactNotification("info");
+    let authUrl = applicationUrls.root;
+    if (this.props.isBurgerBuilding) {
+      authUrl = applicationUrls.checkout;
+    } else {
+      authUrl = applicationUrls.root;
+    }
+    this.props.onsetAuthRedirectPath(authUrl);
+  }
 
   render() {
-    console.log("Auth => ", this.state);
+    console.log("Auth => ", this.props);
     const { isSignIn } = this.state;
-    return (
-      <div>
+    const {
+      isLoading,
+      isUserAuthorised,
+      authRedirectPath,
+      isBurgerBuilding,
+    } = this.props;
+
+    let form = <Spinner />;
+    if (!isLoading) {
+      form = (
         <FormComponent onSubmit={this.formSubmitHandler} form="Auth">
           <div className="form-group">
             <LabelComponent
@@ -68,17 +89,36 @@ export class Auth extends Component {
             Switch To {isSignIn ? "SignUp" : "SignIn"}
           </button>
         </FormComponent>
-      </div>
+      );
+    }
+    return (
+      <Fragment>
+        <NotificationContainer />
+        {form}
+        {isUserAuthorised ? <Redirect to={authRedirectPath} /> : null}
+      </Fragment>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    error: state.auth.error,
+    token: state.auth.token,
+    isLoading: state.auth.loading,
+    isUserAuthorised: state.auth.token != null,
+    isBurgerBuilding: state.burgerBuilder.isBuilding,
+    authRedirectPath: state.auth.authRedirectPath,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getAuth: (authData, isSignIn) => {
       dispatch(auth(authData, isSignIn));
     },
+    onsetAuthRedirectPath: (path) => dispatch(setAuthRedirectPath(path)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

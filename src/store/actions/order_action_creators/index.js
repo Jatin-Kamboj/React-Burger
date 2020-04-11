@@ -5,36 +5,36 @@ const purchaseBurgerSuccess = (id, orderData) => {
   return {
     type: actionTypes.PURCHASE_BURGER_SUCCESS,
     orderData: orderData,
-    orderId: id
+    orderId: id,
   };
 };
 
 // These are the synchronous action creators
-const purchaseBurgerFail = error => {
+const purchaseBurgerFail = (error) => {
   return {
     type: actionTypes.PURCHASE_BURGER_FAIL,
-    error: error
+    error: error,
   };
 };
 
 // These are the synchronous action creators
 export const purchaseBurger = () => {
   return {
-    type: actionTypes.PURCHASE_BURGER_START
+    type: actionTypes.PURCHASE_BURGER_START,
   };
 };
 
 //Creating async action creators
-export const purchaseBurgerStart = orderData => {
-  return dispatch => {
+export const purchaseBurgerStart = (orderData, token) => {
+  return (dispatch) => {
     dispatch(purchaseBurger());
     axiosInstance
-      .post("/orders.json", orderData)
-      .then(response => {
+      .post("/orders.json?auth=" + token, orderData)
+      .then((response) => {
         console.log("orders => ", response.data);
         dispatch(purchaseBurgerSuccess(response.data.name, orderData));
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch(purchaseBurgerFail(error));
       });
   };
@@ -42,49 +42,49 @@ export const purchaseBurgerStart = orderData => {
 
 export const purchaseInit = () => {
   return {
-    type: actionTypes.PURCHASE_INIT
+    type: actionTypes.PURCHASE_INIT,
   };
 };
 
-const fetchOrdersSuccess = orders => {
+const fetchOrdersSuccess = (orders) => {
   return {
     type: actionTypes.FETCH_ORDERS_SUCCESS,
-    orders: orders
+    orders: orders,
   };
 };
 
-export const fetchOrdersFail = error => {
+export const fetchOrdersFail = (error) => {
   return {
     type: actionTypes.FETCH_ORDERS_FAIL,
-    error: error
+    error: error,
   };
 };
 
 export const fetchOrdersStart = () => {
   return {
-    type: actionTypes.FETCH_ORDERS_START
+    type: actionTypes.FETCH_ORDERS_START,
   };
 };
 
-export const fetchOrders = () => {
-  return dispatch => {
+export const fetchOrders = (token) => {
+  return (dispatch) => {
     dispatch(fetchOrdersStart());
     axiosInstance
-      .get("/orders.json")
-      .then(response => {
+      .get("/orders.json?auth=" + token)
+      .then((response) => {
         let fetchOrders = [];
         for (const key in response.data) {
           fetchOrders.push({ ...response.data[key], id: key });
         }
         dispatch(fetchOrdersSuccess(fetchOrders));
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch(fetchOrdersFail(error));
       });
   };
 };
 
-export const deleteOrderSuccess = id => {
+export const deleteOrderSuccess = (id) => {
   return { type: actionTypes.DELETE_ORDER, orderId: id };
 };
 
