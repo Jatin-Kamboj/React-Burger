@@ -13,9 +13,10 @@ const initialState = {
 const authUpdate = (state, action) => {
   return updateObject(state, {
     token: action.authData.idToken,
-    userId: action.authData.email,
-    refreshToken: action.authData.refreshToken,
-    loading: action.loading,
+    localId: action.authData.localId,
+    // userId: action.authData.email,
+    // refreshToken: action.authData.refreshToken,
+    loading: false,
   });
 };
 
@@ -53,6 +54,7 @@ const authReducer = (state = initialState, action) => {
       return authLogout(state, action);
     case actionTypes.SET_AUTH_REDIRECT_PATH:
       return setAuthRedirectPath(state, action);
+
     default:
       return state;
       break;

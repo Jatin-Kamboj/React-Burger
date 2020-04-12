@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
 import App from "./App";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import * as serviceWorker from "./serviceWorker";
@@ -13,6 +13,7 @@ import authReducer from "./store/reducers/auth_reducer";
 import thunk from "redux-thunk";
 import { reducer as formReducer } from "redux-form";
 import "../src/styles/style.css";
+import { createBrowserHistory as createHistory } from "history";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
@@ -30,11 +31,12 @@ const store = createStore(
 //     console.log("getState() :", store.getState().burgerBuilder);
 //   })
 // );
+const history = createHistory();
 const app = (
   <Provider store={store}>
-    <BrowserRouter>
+    <Router history={history}>
       <App />
-    </BrowserRouter>
+    </Router>
   </Provider>
 );
 

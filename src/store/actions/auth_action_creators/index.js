@@ -2,6 +2,7 @@ import * as actionTypes from "../action_types";
 import axios from "axios";
 import { applicationUrls } from "../../../common";
 import { set, get, remove } from "../../../Utils";
+import { axiosInstance } from "../../../axios/axios";
 const authStart = () => {
   return { type: actionTypes.AUTH_START, loading: true };
 };
@@ -18,6 +19,7 @@ const authFail = (error) => {
 export const authLogout = () => {
   remove("token");
   remove("expirationTime");
+  remove("userId");
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
@@ -28,6 +30,52 @@ const checkAuthTimeOut = (authTime) => {
     setTimeout(() => {
       dispatch(authLogout());
     }, authTime * 1000);
+  };
+};
+
+const authGetUserDetailsStart = () => {
+  return {
+    type: actionTypes.GET_USER_DETAILS_START,
+    loading: true,
+  };
+};
+
+const authGetUserDetailsSuccess = (authDetails) => {
+  return {
+    type: actionTypes.GET_USER_DETAILS_SUCCESS,
+    ...authDetails,
+    loading: true,
+  };
+};
+
+export const authGetUserDetails = (idToken) => {
+  return (dispatch) => {
+    dispatch(authGetUserDetailsStart());
+    const payLoad = {
+      idToken: idToken,
+    };
+    axiosInstance
+      .post(
+        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDjI038bazcPIuRGLwdDRd_fWUumhZVMwc",
+        payLoad
+      )
+      .then((response) => {
+        let userDetails = response.data.users[0];
+        userDetails["idToken"] = idToken;
+        // console.log("authGetUserDetails => ", userDetails);
+        dispatch(authSuccess(userDetails));
+      })
+      .catch((error) => {
+        dispatch(authGetUserDetailsFail(error.response.data.errorMessage));
+      });
+  };
+};
+
+const authGetUserDetailsFail = (error) => {
+  return {
+    type: actionTypes.GET_USER_DETAILS_FAIL,
+    loading: false,
+    error: error,
   };
 };
 
@@ -51,13 +99,14 @@ export const auth = (authData, isSignIn) => {
         let expirationTime = new Date(
           new Date().getTime() + response.data.expiresIn * 1000
         );
-        console.log("expirationTime", expirationTime);
+        // console.log("expirationTime", expirationTime);
         set("token", response.data.idToken);
         set("expirationTime", expirationTime);
+        set("userId", response.data.localId);
         // dispatch(setAuthRedirectPath(applicationUrls.checkout));
       })
       .catch((error) => {
-        dispatch(authFail(error.response.data.error.message));
+        dispatch(authFail(error.response));
       });
   };
 };
@@ -76,9 +125,17 @@ export const authCheckState = () => {
     if (!token) {
       dispatch(authLogout());
     } else if (expirationTime > new Date()) {
-      dispatch(authSuccess());
-      console.log("date :", expirationTime.getTime() - new Date().getTime());
-      // dispatch(checkAuthTimeOut(checkAuthTimeOut))
+      // dispatch(authSuccess());
+      dispatch(authGetUserDetails(token));
+      // console.log(
+      //   "date :",
+      //   expirationTime.getSeconds() - new Date().getSeconds()
+      // );
+      dispatch(
+        checkAuthTimeOut(
+          (expirationTime.getTime() - new Date().getTime()) / 1000
+        )
+      );
     }
   };
 };

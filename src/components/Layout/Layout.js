@@ -22,7 +22,7 @@ class Layout extends React.Component {
 
   render() {
     const { isUserAuthorised } = this.props;
-    console.log("isUserAuthorised :", isUserAuthorised);
+    // console.log("isUserAuthorised :", isUserAuthorised);
     return (
       <Aux>
         <Toolbar

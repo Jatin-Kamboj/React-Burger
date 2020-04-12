@@ -118,7 +118,7 @@ class ContactDataComponent extends Component {
   };
 
   render() {
-    console.log("contact => ", this.props);
+    // console.log("contact => ", this.props);
     const { isLoading, orderForm } = this.state;
 
     let formInputArray = [];

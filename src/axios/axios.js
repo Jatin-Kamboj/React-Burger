@@ -13,13 +13,13 @@ axiosInstance.interceptors.request.use((request) => {
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log("response => ", response);
+    // console.log("response => ", response);
     // if(request.re)
     return response;
   },
   (error) => {
     if (error.response.status === responseCodes.unAuthorised) {
-      console.log("response error", error.response.status);
+      // console.log("response error", error.response.status);
     }
   }
 );
