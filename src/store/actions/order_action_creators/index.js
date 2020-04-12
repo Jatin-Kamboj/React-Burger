@@ -26,6 +26,7 @@ export const purchaseBurger = () => {
 
 //Creating async action creators
 export const purchaseBurgerStart = (orderData, token) => {
+  console.log("orderData :", orderData);
   return (dispatch) => {
     dispatch(purchaseBurger());
     axiosInstance
@@ -66,11 +67,13 @@ export const fetchOrdersStart = () => {
   };
 };
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
   return (dispatch) => {
     dispatch(fetchOrdersStart());
+    const queryParams =
+      "?auth=" + token + '&orderBy="userId"&equalTo="' + userId + '"';
     axiosInstance
-      .get("/orders.json?auth=" + token)
+      .get("/orders.json" + queryParams)
       .then((response) => {
         let fetchOrders = [];
         for (const key in response.data) {

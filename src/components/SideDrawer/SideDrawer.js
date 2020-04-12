@@ -4,8 +4,9 @@ import NavigationItems from "../Navigation/NavigationItems/NavigationItems";
 import Backdrop from "../UI/Backdrop/Backdrop";
 import Logo from "../Logo/Logo";
 import Aux from "../hoc/auxilary_component/index";
+import { connect } from "react-redux";
 
-const sideDrawer = props => {
+const sideDrawer = (props) => {
   let attachedClasses = [classes.SideDrawer, classes.close];
 
   if (props.show) {
@@ -19,11 +20,17 @@ const sideDrawer = props => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems />
+          <NavigationItems isUserAuthorised={props.isUserAuthorised} />
         </nav>
       </div>
     </Backdrop>
   );
 };
 
-export default sideDrawer;
+const mapStateToProps = (state) => {
+  return {
+    isUserAuthorised: state.auth.token != null,
+  };
+};
+
+export default connect(mapStateToProps)(sideDrawer);

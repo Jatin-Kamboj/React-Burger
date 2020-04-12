@@ -17,7 +17,7 @@ class OrdersComponent extends Component {
     console.log("componentDidMount");
     // this.setState({ loading: true });
     // if (this.props.isUserAuthorised) {
-    get("token") && this.props.getOrdersInit(get("token"));
+    get("token") && this.props.getOrdersInit(get("token"), this.props.userId);
     // }
   }
 
@@ -58,12 +58,14 @@ const mapStateToProps = (state) => {
     loading: state.order.loading,
     token: state.auth.token,
     isUserAuthorised: state.auth.token != null,
+    userId: state.auth.localId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getOrdersInit: (token) => dispatch(actionCreators.fetchOrders(token)),
+    getOrdersInit: (token, userId) =>
+      dispatch(actionCreators.fetchOrders(token, userId)),
   };
 };
 

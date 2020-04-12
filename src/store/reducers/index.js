@@ -27,6 +27,10 @@ const setIngredients = (state, action) => {
   });
 };
 
+const purchaseBurgerStart = (state, action) => {
+  return updateObject(state, { loading: true });
+};
+
 const reducer = (state = intitalState, action) => {
   switch (action.type) {
     case actionTypes.ADD_INGREDIENTS:
@@ -64,15 +68,10 @@ const reducer = (state = intitalState, action) => {
       return vale;
     case actionTypes.SET_INGREDIENTS:
       return setIngredients(state, action);
-    case actionTypes.remove_ingredient:
-      return {
-        ...state,
-        error: true,
-        errorMessage: action.errorMessage,
-      };
+    case actionTypes.PURCHASE_BURGER_START:
+      return purchaseBurgerStart(state, action);
     default:
       return state;
-      break;
   }
 };
 
