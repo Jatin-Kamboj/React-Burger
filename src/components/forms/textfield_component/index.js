@@ -5,8 +5,10 @@ const renderField = ({
   input,
   type,
   meta,
+  input: { value, onChange },
   meta: { touched, error, warning },
 }) => {
+  // console.log("value :", value);
   if (type === formTypes.textarea) {
     return (
       <div>

@@ -1,10 +1,15 @@
 import * as actionTypes from "../../actions";
+import { updateObject } from "../../../Utils/redux_utils";
 
 const initialState = {
   orders: [],
   loading: false,
   purchased: false,
-  error: null
+  error: null,
+};
+
+const PurchaseBurgerFail = (state, action) => {
+  return updateObject(state, { loading: false, purchased: false });
 };
 
 const orderReducer = (state = initialState, action) => {
@@ -15,48 +20,44 @@ const orderReducer = (state = initialState, action) => {
         orders: state.orders.concat({
           id: action.orderId,
           ...action.orderData,
-          purchased: true
-        })
+          purchased: true,
+        }),
       };
       break;
     case actionTypes.PURCHASE_BURGER_FAIL:
-      return {
-        ...state,
-        loading: false,
-        purchased: false
-      };
+      return PurchaseBurgerFail(state, action);
       break;
     case actionTypes.PURCHASE_BURGER_START:
       return {
         ...state,
         loading: true,
-        purchased: true
+        purchased: true,
       };
       break;
     case actionTypes.PURCHASE_INIT:
       return {
         ...state,
-        purchased: false
+        purchased: false,
       };
       break;
     case actionTypes.FETCH_ORDERS_START:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
       break;
     case actionTypes.FETCH_ORDERS_SUCCESS:
       return {
         ...state,
         loading: false,
-        orders: action.orders
+        orders: action.orders,
       };
       break;
     case actionTypes.FETCH_ORDERS_FAIL:
       return {
         ...state,
         loading: false,
-        error: action.error
+        error: action.error,
       };
       break;
     default:

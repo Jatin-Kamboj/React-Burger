@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import * as ActionCreators from "../../../../store/actions";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import { updateObject } from "../../../../Utils/redux_utils";
 
 class ContactDataComponent extends Component {
   state = {
@@ -111,10 +112,17 @@ class ContactDataComponent extends Component {
   };
 
   inputOnChangeHandler = (event, inputIdentifier) => {
-    const updatedOrderForm = { ...this.state.orderForm };
-    const updatedFormElement = { ...this.state.orderForm[inputIdentifier] };
-    updatedFormElement.value = event.target.value;
-    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    let updatedOrderForm = { ...this.state.orderForm };
+    // const updatedFormElement = { ...this.state.orderForm[inputIdentifier] };
+    let updatedFormElement = updateObject(
+      this.state.orderForm[inputIdentifier],
+      { value: event.target.value }
+    );
+    updatedOrderForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updatedFormElement,
+    });
+    // updatedFormElement.value = event.target.value;
+    // updatedOrderForm[inputIdentifier] = updatedFormElement;
     this.setState({ orderForm: updatedOrderForm });
   };
 

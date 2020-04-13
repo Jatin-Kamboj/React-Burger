@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { CheckoutSummary } from "../../order/checkout_summary";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, withRouter } from "react-router-dom";
 import ContactDataComponent from "./contact_data_component";
 import { connect } from "react-redux";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
@@ -11,27 +11,27 @@ import Spinner from "../../UI/Spinner/Spinner";
 class CheckoutComponent extends Component {
   state = {
     ingredients: null,
-    price: ""
+    price: "",
   };
 
-  componentWillMount() {
-    // console.log("checkoutContinue => ", this.props);
-    const query = new URLSearchParams(this.props.location.search);
+  // componentWillMount() {
+  //   // console.log("checkoutContinue => ", this.props);
+  //   const query = new URLSearchParams(this.props.location.search);
 
-    const ingredients = {};
-    let price = null;
+  //   const ingredients = {};
+  //   let price = null;
 
-    for (const param of query.entries()) {
-      // console.log("Param values => ", param);
-      if (param[0] === "price") {
-        price = param[1];
-      } else {
-        ingredients[param[0]] = +param[1];
-      }
-    }
-    // console.log("checkoutContinue price=> ", price, ingredients);
-    this.setState({ ingredients: ingredients, price: price });
-  }
+  //   for (const param of query.entries()) {
+  //     // console.log("Param values => ", param);
+  //     if (param[0] === "price") {
+  //       price = param[1];
+  //     } else {
+  //       ingredients[param[0]] = +param[1];
+  //     }
+  //   }
+  //   // console.log("checkoutContinue price=> ", price, ingredients);
+  //   this.setState({ ingredients: ingredients, price: price });
+  // }
 
   checkoutContinue = () => {
     // console.log("checkoutContinue => ", this.props);
@@ -87,11 +87,11 @@ class CheckoutComponent extends Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     ingredients: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
-    purchased: state.order.purchased
+    purchased: state.order.purchased,
   };
 };
 
@@ -100,7 +100,9 @@ const mapStateToProps = state => {
 //     onPurchaseInit: () => dispatch(actionCreators.purchaseInit())
 //   };
 // };
-export default connect(
-  mapStateToProps
-  // ,mapDispatchToProps
-)(withErrorHandler(CheckoutComponent, axiosInstance));
+export default withRouter(
+  connect(
+    mapStateToProps
+    // ,mapDispatchToProps
+  )(withErrorHandler(CheckoutComponent, axiosInstance))
+);

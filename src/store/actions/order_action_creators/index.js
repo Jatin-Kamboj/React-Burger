@@ -26,13 +26,11 @@ export const purchaseBurger = () => {
 
 //Creating async action creators
 export const purchaseBurgerStart = (orderData, token) => {
-  console.log("orderData :", orderData);
   return (dispatch) => {
     dispatch(purchaseBurger());
     axiosInstance
       .post("/orders.json?auth=" + token, orderData)
       .then((response) => {
-        console.log("orders => ", response.data);
         dispatch(purchaseBurgerSuccess(response.data.name, orderData));
       })
       .catch((error) => {

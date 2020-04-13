@@ -14,7 +14,6 @@ class OrdersComponent extends Component {
     loading: false,
   };
   componentDidMount() {
-    console.log("componentDidMount");
     // this.setState({ loading: true });
     // if (this.props.isUserAuthorised) {
     get("token") && this.props.getOrdersInit(get("token"), this.props.userId);
@@ -23,10 +22,9 @@ class OrdersComponent extends Component {
 
   render() {
     let isOrdersLoaded = <Spinner />;
-    // console.log("Orders => ", this.props);
+
     const { orders, isUserAuthorised } = this.state;
 
-    // let orderView = null;
     if (orders) {
       isOrdersLoaded =
         this.props.orders &&

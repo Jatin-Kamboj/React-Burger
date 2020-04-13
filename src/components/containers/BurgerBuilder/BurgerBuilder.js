@@ -81,7 +81,6 @@ export class BurgerBuilder extends Component {
   // };
 
   purchaseHandler = () => {
-    console.log("purchaseHandler");
     if (!this.props.isAuthorised) {
       this.props.history.push(applicationUrls.auth);
       this.props.onsetAuthRedirectPath(applicationUrls.auth);

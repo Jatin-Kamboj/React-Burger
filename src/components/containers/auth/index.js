@@ -16,7 +16,6 @@ export class Auth extends Component {
   };
 
   formSubmitHandler = (values) => {
-    console.log("formSubmitHandler => ", values);
     if (values) {
       this.props.getAuth(values, this.state.isSignIn);
     }
@@ -41,7 +40,6 @@ export class Auth extends Component {
   }
 
   render() {
-    console.log("Auth => ", this.props);
     const { isSignIn } = this.state;
     const {
       isLoading,

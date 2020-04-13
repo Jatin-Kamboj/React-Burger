@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Layout from "./components/Layout/Layout.js";
 import BurgerBuilder from "./components/containers/BurgerBuilder/BurgerBuilder";
-import { BrowserRouter, Redirect, NavLink, withRouter } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { Route, Switch, Router } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actionCreators from "./store/actions";
