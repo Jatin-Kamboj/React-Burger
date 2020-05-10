@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { Router } from "react-router-dom";
+import { Router, BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import * as serviceWorker from "./serviceWorker";
@@ -31,12 +31,15 @@ const store = createStore(
 //     console.log("getState() :", store.getState().burgerBuilder);
 //   })
 // );
+// <Router history={history}>
+// </Router>
+
 const history = createHistory();
 const app = (
   <Provider store={store}>
-    <Router history={history}>
+    <BrowserRouter basename={window.location.href}>
       <App />
-    </Router>
+    </BrowserRouter>
   </Provider>
 );
 

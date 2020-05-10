@@ -3,6 +3,7 @@ import axios from "axios";
 import { applicationUrls } from "../../../common";
 import { set, get, remove } from "../../../Utils";
 import { axiosInstance } from "../../../axios/axios";
+
 const authStart = () => {
   return { type: actionTypes.AUTH_START, loading: true };
 };
