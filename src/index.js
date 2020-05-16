@@ -14,6 +14,8 @@ import thunk from "redux-thunk";
 import { reducer as formReducer } from "redux-form";
 import "../src/styles/style.css";
 import { createBrowserHistory as createHistory } from "history";
+import createSagaMiddleware from "redux-saga";
+import { logoutSaga } from "./store/sagas/auth";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
@@ -22,10 +24,14 @@ const rootReducer = combineReducers({
   form: formReducer,
   auth: authReducer,
 });
+
+const sagaMiddleware = createSagaMiddleware();
+
 const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(thunk, sagaMiddleware))
 );
+sagaMiddleware.run(logoutSaga);
 // console.log(
 //   store.subscribe(() => {
 //     console.log("getState() :", store.getState().burgerBuilder);
