@@ -6,13 +6,16 @@ import { Route, Switch, Router } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actionCreators from "./store/actions";
 import { UserRoutes, AuthorisedRoutes } from "./Utils/routes";
-
+import jwtDecode from "jwt-decode";
+import { get } from "./Utils/localStorage";
+// import Red from 'redux-saga'
 class App extends Component {
   componentDidMount() {
     this.props.onAuthCheckState();
   }
 
   render() {
+    console.log("jwtDecode()", jwtDecode(get("token")));
     const { isUserAuthorised } = this.props;
     return (
       <div className="text-center">

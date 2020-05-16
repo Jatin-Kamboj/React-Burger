@@ -125,7 +125,7 @@ export const authCheckState = () => {
     const expirationTime = new Date(get("expirationTime"));
     if (!token) {
       dispatch(authLogout());
-    } else if (expirationTime > new Date()) {
+    } else if (expirationTime > new Date() && token) {
       // dispatch(authSuccess());
       dispatch(authGetUserDetails(token));
       // console.log(
