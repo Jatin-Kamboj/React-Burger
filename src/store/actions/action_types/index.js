@@ -3,6 +3,7 @@ export const REMOVE_INGREDIENTS = "REMOVE_INGREDIENTS";
 export const SET_INGREDIENTS = "SET_INGREDIENTS";
 export const SET_INGREDIENTS_START = "SET_INGREDIENTS_START";
 export const FETCH_INGREDIENTS_FAILED = "FETCH_INGREDIENTS_FAILED";
+export const INT_INGREDIENTS = "INT_INGREDIENTS";
 
 export const PURCHASE_BURGER_SUCCESS = "PURCHASE_BURGER_SUCCESS";
 export const PURCHASE_BURGER_FAIL = "PURCHASE_BURGER_FAIL";
@@ -19,7 +20,12 @@ export const AUTH_START = "AUTH_START";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_FAIL = "AUTH_FAIL";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
+export const AUTH_INITIATE_LOGOUT = "AUTH_INITIATE_LOGOUT";
 export const SET_AUTH_REDIRECT_PATH = "SET_AUTH_REDIRECT_PATH";
+export const AUTH_CHECK_TIMEOUT = "AUTH_CHECK_TIMEOUT";
+export const AUTH_CHECK_INTIAL_STATE = "AUTH_CHECK_INTIAL_STATE";
+export const AUTH_USER = "AUTH_USER"; // This is for the redux saga to listen to the action dispatched and dispatch a Sga for it.
+export const AUTH_GET_USER_DETAILS = "AUTH_GET_USER_DETAILS"; // This is for the redux saga to listen to the action dispatched and dispatch a Sga for it.
 
 export const GET_USER_DETAILS_START = "GET_USER_DETAILS_START";
 export const GET_USER_DETAILS = "GET_USER_DETAILS";

@@ -15,7 +15,7 @@ import { reducer as formReducer } from "redux-form";
 import "../src/styles/style.css";
 import { createBrowserHistory as createHistory } from "history";
 import createSagaMiddleware from "redux-saga";
-import { logoutSaga } from "./store/sagas/auth";
+import { watchAuth, watchBurgerBuilder } from "./store/sagas/index";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
@@ -31,7 +31,8 @@ const store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware(thunk, sagaMiddleware))
 );
-sagaMiddleware.run(logoutSaga);
+sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchBurgerBuilder);
 // console.log(
 //   store.subscribe(() => {
 //     console.log("getState() :", store.getState().burgerBuilder);
@@ -43,7 +44,8 @@ sagaMiddleware.run(logoutSaga);
 const history = createHistory();
 const app = (
   <Provider store={store}>
-    <BrowserRouter basename={window.location.href}>
+    {/*  <BrowserRouter basename={window.location.href}>*/}
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </Provider>
@@ -51,7 +53,4 @@ const app = (
 
 ReactDOM.render(app, document.getElementById("root"));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();

@@ -16,37 +16,29 @@ export const remove_ingredient = (ingredient) => {
   };
 };
 
-const set_ingredient = (ingredients) => {
+export const set_ingredient = (ingredients) => {
   return {
     type: actionTypes.SET_INGREDIENTS,
     ingredients: ingredients,
   };
 };
 
-const fetchIngredientsFailed = (error) => {
+export const fetchIngredientsFailed = (error) => {
   return {
     type: actionTypes.FETCH_INGREDIENTS_FAILED,
     errorMessage: error,
   };
 };
 
-const setIngredientsStart = (error) => {
+export const setIngredientsStart = (error) => {
   return {
     type: actionTypes.SET_INGREDIENTS_START,
     loading: true,
   };
 };
 
-export const initIngredients = (isAuthorised) => {
-  return (dispatch) => {
-    dispatch(setIngredientsStart());
-    axiosInstance
-      .get("/Ingredients.json")
-      .then((response) => {
-        dispatch(set_ingredient(response.data));
-      })
-      .catch((error) => {
-        dispatch(fetchIngredientsFailed(error));
-      });
+export const initIngredients = () => {
+  return {
+    type: actionTypes.INT_INGREDIENTS,
   };
 };
