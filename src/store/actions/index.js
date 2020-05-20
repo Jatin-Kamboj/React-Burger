@@ -27,6 +27,8 @@ export {
   AUTH_GET_USER_DETAILS,
   AUTH_CHECK_INTIAL_STATE,
   INT_INGREDIENTS,
+  PURCHASE_BURGER,
+  FETCH_ORDERS,
 } from "./action_types";
 export {
   add_ingredient,
@@ -41,6 +43,12 @@ export {
   purchaseBurger,
   purchaseInit,
   fetchOrders,
+  deleteOrderSuccess,
+  fetchOrdersFail,
+  fetchOrdersStart,
+  purchaseBurgerFail,
+  purchaseBurgerSuccess,
+  fetchOrdersSuccess,
 } from "./order_action_creators";
 export {
   auth,

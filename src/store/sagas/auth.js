@@ -13,13 +13,13 @@ export function* logoutSaga(action) {
 }
 
 export function* checkAuthTimeSaga(action) {
-  console.log("checkAuthTime");
+  // console.log("checkAuthTime");
   yield delay(action.expirationTime * 1000);
   yield put(actions.authLogout()); // This action performs side effects in the Redux store and the logic is written in the Reducer for the dispatched action.
 }
 
 export function* authSaga(action) {
-  console.log("authSaga", action);
+  // console.log("authSaga", action);
   yield put(actions.authStart());
   action.authData["returnSecureToken"] = true;
 
@@ -46,7 +46,7 @@ export function* authSaga(action) {
 }
 
 export function* authGetUserDetailsSaga(action) {
-  console.log("authGetUserDetailsSaga", action);
+  // console.log("authGetUserDetailsSaga", action);
   yield put(actions.authGetUserDetailsStart());
   const payLoad = {
     idToken: action.idToken,

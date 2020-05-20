@@ -15,7 +15,7 @@ import { reducer as formReducer } from "redux-form";
 import "../src/styles/style.css";
 import { createBrowserHistory as createHistory } from "history";
 import createSagaMiddleware from "redux-saga";
-import { watchAuth, watchBurgerBuilder } from "./store/sagas/index";
+import { watchAuth, watchBurgerBuilder, watchOrder } from "./store/sagas/index";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
@@ -33,6 +33,7 @@ const store = createStore(
 );
 sagaMiddleware.run(watchAuth);
 sagaMiddleware.run(watchBurgerBuilder);
+sagaMiddleware.run(watchOrder);
 // console.log(
 //   store.subscribe(() => {
 //     console.log("getState() :", store.getState().burgerBuilder);
