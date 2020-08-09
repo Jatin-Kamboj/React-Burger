@@ -5,7 +5,6 @@ export const UserRoutes = () => {
   return (
     <Switch>
       <Route path="/auth" exact component={Auth} />
-      />
     </Switch>
   );
 };

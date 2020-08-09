@@ -3,11 +3,16 @@ import Aux from "../hoc/auxilary_component";
 import Toolbar from "../Toolbar/Toolbar";
 import SideDrawer from "../SideDrawer/SideDrawer";
 import classnames from "./Layout.module.css";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 class Layout extends React.Component {
   state = {
     showSideDrawer: false,
+  };
+
+  static propsTypes = {
+    isUserAuthorised: PropTypes.bool.isRequired,
   };
 
   sideDrawerClosedHandler = () => {

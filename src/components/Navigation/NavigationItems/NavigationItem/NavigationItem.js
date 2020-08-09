@@ -3,7 +3,8 @@ import classes from "./NavigationItem.module.css";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const NavigationItem = props => {
+const NavigationItem = (props) => {
+  console.log("props", props);
   return (
     <li className={classes.NavigationItem}>
       <NavLink
@@ -17,9 +18,13 @@ const NavigationItem = props => {
   );
 };
 
+NavigationItem.defaultProps = {
+  exact: false,
+};
+
 NavigationItem.prototype = {
   link: PropTypes.string.isRequired,
-  exact: PropTypes.string,
-  children: PropTypes.isRequired
+  exact: PropTypes.bool,
+  children: PropTypes.isRequired,
 };
 export default NavigationItem;
