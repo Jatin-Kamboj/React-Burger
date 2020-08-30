@@ -7,6 +7,7 @@ import { tryStatement } from "@babel/types";
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
+  const [enterFilter, setEnterFilter] = useState("");
 
   const addIngredientsHandler = async newIngredient => {
     if (newIngredient) {
@@ -73,7 +74,7 @@ function Ingredients() {
     <div className="App">
       <IngredientForm addIngredientsHandler={addIngredientsHandler} />
       <section>
-        <Search />
+        <Search enterFilter={enterFilter} setEnterFilter={setEnterFilter} />
         <IngredientList
           onRemoveItem={removeHandler}
           ingredients={ingredients}
