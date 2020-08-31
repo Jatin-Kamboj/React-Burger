@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useCallback } from "react";
 import IngredientForm from "./IngredientForm";
 import IngredientList from "./IngredientList";
 import Search from "./Search";
-import { tryStatement } from "@babel/types";
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
-  const [enterFilter, setEnterFilter] = useState("");
 
   const addIngredientsHandler = async newIngredient => {
     if (newIngredient) {
@@ -55,26 +52,34 @@ function Ingredients() {
         "https://covid-c1962.firebaseio.com/ingredients.json"
       );
       let fetchedIngredients = await response.json();
-      const ingredientsArr = [];
-      fetchedIngredients = Object.entries(fetchedIngredients);
-      fetchedIngredients.forEach(([id, value]) =>
-        ingredientsArr.push({ id, ...value })
-      );
-      setIngredients(ingredientsArr);
+      onIngredientsFetch(fetchedIngredients);
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    fetchIngredients();
-  }, []);
+  const onIngredientsFetch = useCallback(
+    ingredients => {
+      const ingredientsArr = [];
+      let fetchedIngredients = Object.entries(ingredients);
+      fetchedIngredients.forEach(([id, value]) =>
+        ingredientsArr.push({ id, ...value })
+      );
+      setIngredients(ingredientsArr);
+    },
+    [setIngredients]
+  );
 
+  // useEffect(() => {
+  //   console.log("useEffect");
+  //   fetchIngredients();
+  // }, []);
+  console.log("ingredients :>> ", ingredients);
   return (
     <div className="App">
       <IngredientForm addIngredientsHandler={addIngredientsHandler} />
       <section>
-        <Search enterFilter={enterFilter} setEnterFilter={setEnterFilter} />
+        <Search onIngredientsFetch={onIngredientsFetch} />
         <IngredientList
           onRemoveItem={removeHandler}
           ingredients={ingredients}
