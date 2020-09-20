@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import './IngredientList.css';
+import "./IngredientList.css";
 
 const IngredientList = props => {
   return (
@@ -11,6 +11,7 @@ const IngredientList = props => {
           <li key={ig.id} onClick={props.onRemoveItem.bind(this, ig.id)}>
             <span>{ig.title}</span>
             <span>{ig.amount}x</span>
+            {/* <span>x</span> */}
           </li>
         ))}
       </ul>

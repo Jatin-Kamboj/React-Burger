@@ -30,12 +30,22 @@ function Ingredients() {
     }
   };
 
-  const removeHandler = ingredientId => {
+  const removeHandler = useCallback(async ingredientId => {
     if (ingredientId) {
       const deletedIngredient = ingredients.find(
         ingredient => ingredient.id === ingredientId
       );
-
+      try {
+        const response = await fetch(
+          `https://covid-c1962.firebaseio.com/ingredients/${ingredientId}.json`,
+          {
+            method: "DELETE"
+          }
+        );
+        console.log("removeHandler", response);
+      } catch (error) {
+        console.log("removeHandler error", error);
+      }
       if (deletedIngredient) {
         setIngredients(previousIngredients =>
           previousIngredients.filter(
@@ -44,7 +54,7 @@ function Ingredients() {
         );
       }
     }
-  };
+  });
 
   const fetchIngredients = async () => {
     try {
