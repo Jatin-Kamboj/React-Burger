@@ -1,14 +1,36 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useReducer } from "react";
 import IngredientForm from "./IngredientForm";
 import IngredientList from "./IngredientList";
+import ErrorModal from "../UI/ErrorModal";
 import Search from "./Search";
 
-function Ingredients() {
-  const [ingredients, setIngredients] = useState([]);
+const ingredientsActions = ["SET", "DELETE", "ADD"];
+
+const ingredientReducer = (currentIngredients, action) => {
+  switch (action.type) {
+    case "ADD":
+      return [...currentIngredients, action.ingredient];
+    case "DELETE":
+      return currentIngredients.filter(ing => ing.id !== action.id);
+    case "SET":
+      return action.ingredients;
+    default:
+      return "Not reached there...";
+  }
+};
+
+function Ingredients(props) {
+  const [ingredients, dispatch] = useReducer(ingredientReducer, [
+    ingredientsActions
+  ]);
+  // const [ingredients, setIngredients] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const addIngredientsHandler = async newIngredient => {
     if (newIngredient) {
       try {
+        setIsLoading(true);
         const response = await fetch(
           "https://covid-c1962.firebaseio.com/ingredients.json",
           {
@@ -20,12 +42,19 @@ function Ingredients() {
           }
         );
         const res = await response.json();
-        setIngredients(previousIngredients => [
-          ...previousIngredients,
-          { id: res.name, ...newIngredient }
-        ]);
+        // setIngredients(previousIngredients => [
+        //   ...previousIngredients,
+        //   { id: res.name, ...newIngredient }
+        // ]);
+        dispatch({
+          type: "ADD",
+          ingredient: { id: res.name, ...newIngredient }
+        });
+        setIsLoading(false);
       } catch (error) {
         console.log("error", error.message);
+        setIsLoading(false);
+        setError(error.message);
       }
     }
   };
@@ -47,11 +76,12 @@ function Ingredients() {
         console.log("removeHandler error", error);
       }
       if (deletedIngredient) {
-        setIngredients(previousIngredients =>
-          previousIngredients.filter(
-            ingredient => ingredient.id !== ingredientId
-          )
-        );
+        // setIngredients(previousIngredients =>
+        //   previousIngredients.filter(
+        //     ingredient => ingredient.id !== ingredientId
+        //   )
+        // );
+        dispatch({ type: "DELETE", id: ingredientId });
       }
     }
   });
@@ -68,26 +98,35 @@ function Ingredients() {
     }
   };
 
-  const onIngredientsFetch = useCallback(
-    ingredients => {
-      const ingredientsArr = [];
-      let fetchedIngredients = Object.entries(ingredients);
-      fetchedIngredients.forEach(([id, value]) =>
-        ingredientsArr.push({ id, ...value })
-      );
-      setIngredients(ingredientsArr);
-    },
-    [setIngredients]
-  );
+  const onIngredientsFetch = useCallback(ingredients => {
+    const ingredientsArr = [];
+    let fetchedIngredients = Object.entries(ingredients);
+    fetchedIngredients.forEach(([id, value]) =>
+      ingredientsArr.push({ id, ...value })
+    );
+    dispatch({ type: ingredientsActions[0], ingredients: ingredientsArr });
+    // setIngredients(ingredientsArr);
+  }, []);
 
   // useEffect(() => {
   //   console.log("useEffect");
   //   fetchIngredients();
   // }, []);
+
+  const removeErrors = () => {
+    setError(null);
+  };
+
   console.log("ingredients :>> ", ingredients);
+  if (error) {
+    return <ErrorModal onClose={removeErrors}>{error}</ErrorModal>;
+  }
   return (
     <div className="App">
-      <IngredientForm addIngredientsHandler={addIngredientsHandler} />
+      <IngredientForm
+        isLoading={isLoading}
+        addIngredientsHandler={addIngredientsHandler}
+      />
       <section>
         <Search onIngredientsFetch={onIngredientsFetch} />
         <IngredientList
