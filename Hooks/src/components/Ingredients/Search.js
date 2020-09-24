@@ -8,8 +8,8 @@ const Search = React.memo(({ onIngredientsFetch, ...props }) => {
   const inputRef = useRef();
 
   useEffect(() => {
+    console.log("Search useEffect");
     const timeoutRef = setTimeout(() => {
-      console.log("inputRef :>> ");
       const fetchFilteredIngredients = async () => {
         try {
           if (filteredResult === inputRef.current.value) {
@@ -23,7 +23,6 @@ const Search = React.memo(({ onIngredientsFetch, ...props }) => {
             );
             const res = await response.json();
             onIngredientsFetch(res);
-            console.log("res", res);
           }
         } catch (error) {
           Promise.reject(error);
