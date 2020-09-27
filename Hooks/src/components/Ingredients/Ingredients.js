@@ -7,7 +7,7 @@ import Search from "./Search";
 const ingredientsActions = ["SET", "DELETE", "ADD"];
 
 /**
- * Ingredients reducer will be used to manage all the state manipulation of the ingredients over here
+ * Ingredients reducer will be used to manage all the state manipulation of the ingredients in this Component
  * @param {Object} currentIngredients Ingredients value by default
  * @param {Object} action Actions payload which contains the payload for the action dispatched
  */
