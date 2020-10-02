@@ -3,6 +3,7 @@ import IngredientForm from "./IngredientForm";
 import IngredientList from "./IngredientList";
 import ErrorModal from "../UI/ErrorModal";
 import Search from "./Search";
+import useHttp from "../../hooks/useHttp";
 
 const ingredientsActions = ["SET", "DELETE", "ADD"];
 
@@ -47,48 +48,61 @@ export const httpReducer = (state, action) => {
 
 const Ingredients = props => {
   const [ingredients, dispatch] = useReducer(ingredientReducer, []);
+  const [fetchIngredients, setFetchIngredients] = useState(false);
   // const [ingredients, setIngredients] = useState([]);
-  const [httpState, dispatchHttp] = useReducer(httpReducer, {
-    isLoading: false,
-    error: null
-  });
-  const { isLoading, error } = httpState;
+
+  /**
+   * Refracted code when using useHttp request hook to send http request
+   */
+  // const [httpState, dispatchHttp] = useReducer(httpReducer, {
+  //   isLoading: false,
+  //   error: null
+  // });
+  // const { isLoading, error } = httpState;
+
+  const { sendRequest, isLoading, error } = useHttp();
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState();
   // console.log("ingredients", ingredients);
-  const addIngredientsHandler = useCallback(async newIngredient => {
-    if (newIngredient) {
-      try {
-        dispatchHttp({ type: "SEND" });
-        const response = await fetch(
-          "https://covid-c1962.firebaseio.com/ingredients.json",
-          {
-            method: "Post",
-            body: JSON.stringify(newIngredient),
-            headers: {
-              "Content-type": "application/json"
-            }
-          }
-        );
-        const res = await response.json();
-        // setIngredients(previousIngredients => [
-        //   ...previousIngredients,
-        //   { id: res.name, ...newIngredient }
-        // ]);
-        dispatch({
-          type: "ADD",
-          ingredient: { id: res.name, ...newIngredient }
-        });
-        dispatchHttp({ type: "RESPONSE" });
-      } catch (error) {
-        // console.log("error", error.message);
-        // setIsLoading(false);
-        // setError(error.message);
-        dispatchHttp({ type: "ERROR", errorMessage: error.message });
-      }
-    }
-  }, []);
+  const addIngredientsHandler = useCallback(
+    async newIngredient => {
+      if (newIngredient) {
+        try {
+          // dispatchHttp({ type: "SEND" });
+          const response = await sendRequest(
+            "https://covid-c1962.firebaseio.com/ingredients.json",
+            "Post",
+            JSON.stringify(newIngredient)
+          );
 
+          setFetchIngredients(!fetchIngredients);
+          // const res = await response.json();
+          // setIngredients(previousIngredients => [
+          //   ...previousIngredients,
+          //   { id: res.name, ...newIngredient }
+          // ]);
+
+          /**
+           * Refracted code when using useHttp request hook to send http request
+           */
+          // dispatch({
+          //   type: "ADD",
+          //   ingredient: { id: res.name, ...newIngredient }
+          // });
+          // dispatchHttp({ type: "RESPONSE" });
+        } catch (error) {
+          // console.log("error", error.message);
+          // setIsLoading(false);
+          // setError(error.message);
+          // dispatchHttp({ type: "ERROR", errorMessage: error.message });
+        }
+      }
+    },
+    [sendRequest, fetchIngredients]
+  );
+  useEffect(() => {
+    console.log("useEffect sendRequest");
+  }, [sendRequest]);
   const removeHandler = useCallback(
     async ingredientId => {
       if (ingredientId) {
@@ -96,12 +110,11 @@ const Ingredients = props => {
           ingredient => ingredient.id === ingredientId
         );
         try {
-          const response = await fetch(
+          const response = await sendRequest(
             `https://covid-c1962.firebaseio.com/ingredients/${ingredientId}.json`,
-            {
-              method: "DELETE"
-            }
+            "DELETE"
           );
+          setFetchIngredients(!fetchIngredients);
           // console.log("removeHandler", response);
         } catch (error) {
           // console.log("removeHandler error", error);
@@ -112,24 +125,24 @@ const Ingredients = props => {
           //     ingredient => ingredient.id !== ingredientId
           //   )
           // );
-          dispatch({ type: "DELETE", id: ingredientId });
+          // dispatch({ type: "DELETE", id: ingredientId });
         }
       }
     },
-    [ingredients]
+    [ingredients, sendRequest, fetchIngredients]
   );
 
-  const fetchIngredients = async () => {
-    try {
-      const response = await fetch(
-        "https://covid-c1962.firebaseio.com/ingredients.json"
-      );
-      let fetchedIngredients = await response.json();
-      onIngredientsFetch(fetchedIngredients);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchIngredients = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       "https://covid-c1962.firebaseio.com/ingredients.json"
+  //     );
+  //     let fetchedIngredients = await response.json();
+  //     onIngredientsFetch(fetchedIngredients);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const onIngredientsFetch = useCallback(ingredients => {
     const ingredientsArr = [];
@@ -148,7 +161,7 @@ const Ingredients = props => {
 
   const removeErrors = useCallback(() => {
     // setError(null);
-    dispatchHttp({ type: "ERROR", errorMessage: null });
+    // dispatchHttp({ type: "ERROR", errorMessage: null });
   }, []);
 
   // console.log("Render ingredients :>> ");
@@ -162,7 +175,10 @@ const Ingredients = props => {
         addIngredientsHandler={addIngredientsHandler}
       />
       <section>
-        <Search onIngredientsFetch={onIngredientsFetch} />
+        <Search
+          onIngredientsFetch={onIngredientsFetch}
+          fetchIngredients={fetchIngredients}
+        />
         <IngredientList
           onRemoveItem={removeHandler}
           ingredients={ingredients}

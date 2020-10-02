@@ -50,7 +50,7 @@ const useHttp = () => {
     } catch (error) {
       return Promise.reject(error);
     }
-  });
+  }, []);
 
   return { ...httpState, sendRequest };
 };
