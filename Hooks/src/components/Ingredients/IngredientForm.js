@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import Card from "../UI/Card";
 import "./IngredientForm.css";
@@ -8,11 +8,16 @@ const IngredientForm = React.memo(
     const [title, setTitle] = useState("");
     const [amount, setAmount] = useState("");
 
+    // useEffect(() => {
+    //   console.log("useEffect addIngredientsHandler Changed");
+    // }, [addIngredientsHandler]);
+
     const submitHandler = event => {
       event.preventDefault();
       addIngredientsHandler({ title, amount });
     };
 
+    // console.log("IngredientForm");
     return (
       <section className="ingredient-form">
         <Card>

@@ -45,7 +45,7 @@ export const httpReducer = (state, action) => {
   }
 };
 
-function Ingredients(props) {
+const Ingredients = props => {
   const [ingredients, dispatch] = useReducer(ingredientReducer, []);
   // const [ingredients, setIngredients] = useState([]);
   const [httpState, dispatchHttp] = useReducer(httpReducer, {
@@ -56,7 +56,7 @@ function Ingredients(props) {
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState();
   // console.log("ingredients", ingredients);
-  const addIngredientsHandler = async newIngredient => {
+  const addIngredientsHandler = useCallback(async newIngredient => {
     if (newIngredient) {
       try {
         dispatchHttp({ type: "SEND" });
@@ -87,34 +87,37 @@ function Ingredients(props) {
         dispatchHttp({ type: "ERROR", errorMessage: error.message });
       }
     }
-  };
+  }, []);
 
-  const removeHandler = useCallback(async ingredientId => {
-    if (ingredientId) {
-      const deletedIngredient = ingredients.find(
-        ingredient => ingredient.id === ingredientId
-      );
-      try {
-        const response = await fetch(
-          `https://covid-c1962.firebaseio.com/ingredients/${ingredientId}.json`,
-          {
-            method: "DELETE"
-          }
+  const removeHandler = useCallback(
+    async ingredientId => {
+      if (ingredientId) {
+        const deletedIngredient = ingredients.find(
+          ingredient => ingredient.id === ingredientId
         );
-        // console.log("removeHandler", response);
-      } catch (error) {
-        // console.log("removeHandler error", error);
+        try {
+          const response = await fetch(
+            `https://covid-c1962.firebaseio.com/ingredients/${ingredientId}.json`,
+            {
+              method: "DELETE"
+            }
+          );
+          // console.log("removeHandler", response);
+        } catch (error) {
+          // console.log("removeHandler error", error);
+        }
+        if (deletedIngredient) {
+          // setIngredients(previousIngredients =>
+          //   previousIngredients.filter(
+          //     ingredient => ingredient.id !== ingredientId
+          //   )
+          // );
+          dispatch({ type: "DELETE", id: ingredientId });
+        }
       }
-      if (deletedIngredient) {
-        // setIngredients(previousIngredients =>
-        //   previousIngredients.filter(
-        //     ingredient => ingredient.id !== ingredientId
-        //   )
-        // );
-        dispatch({ type: "DELETE", id: ingredientId });
-      }
-    }
-  });
+    },
+    [ingredients]
+  );
 
   const fetchIngredients = async () => {
     try {
@@ -143,12 +146,12 @@ function Ingredients(props) {
   //   fetchIngredients();
   // }, []);
 
-  const removeErrors = () => {
+  const removeErrors = useCallback(() => {
     // setError(null);
     dispatchHttp({ type: "ERROR", errorMessage: null });
-  };
+  }, []);
 
-  // console.log("ingredients :>> ", ingredients);
+  // console.log("Render ingredients :>> ");
   if (error) {
     return <ErrorModal onClose={removeErrors}>{error}</ErrorModal>;
   }
@@ -167,6 +170,6 @@ function Ingredients(props) {
       </section>
     </div>
   );
-}
+};
 
 export default Ingredients;
