@@ -1,0 +1,13 @@
+This is a react library which is used to create a react component by using their pre defined functions to create a Dom element.
+
+Every time we use the styled objec of the library it return a new react element in which the styles defined in the Template Literals is applied.
+
+Thus that react component is styled as per our styles written. The newly created component recieves all the props which we pass to the 
+styled component.
+
+Don't repeat mistake 
+
+IMP Mistake =>  When writing the css in the styled components the css should be of same type whic we write in the css files.
+
+Syntax => 
+
